@@ -1,0 +1,4 @@
+torch
+trimesh
+glob2
+pytorch-kinematics
