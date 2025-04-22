@@ -39,14 +39,17 @@ robot = RobotModel(
 )
 ```
 
-2. Define target poses and run inverse kinematics:
+2. Define target poses and run batch inverse kinematics:
 
 ```python
+
+# batch size for optimization
+n_samples = 1000
 # Position and orientation (as quaternion) targets
-targets = torch.tensor([[x, y, z, qw, qx, qy, qz]])
+targets = torch.tensor([[x, y, z, qw, qx, qy, qz]]).expand(n_samples,-1)
 
 # Solve with multiple initial configurations for robustness
-solutions = run_ik(robot, targets, n_samples=1000)
+solutions = run_ik(robot, targets, n_samples=n_samples)
 ```
 
 3. For visualization support, ensure your mesh files and link names align properly in the URDF.
@@ -57,4 +60,6 @@ solutions = run_ik(robot, targets, n_samples=1000)
 - Quaternion-based orientation representation
 - Supports batch processing for parallel computation
 - Simple customization through the `RobotModel` class
+
+Please feel free to let me know if there are issues in runing the code.
 
