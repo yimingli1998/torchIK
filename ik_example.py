@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     if visualize:
         scene = trimesh.Scene()
-        random_idx = torch.randint(0, len(q), (10,))
+        random_idx = torch.randint(0, len(q), (20,))
         q4vis = q[random_idx]
 
         for _q in q4vis:

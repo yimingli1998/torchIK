@@ -1,9 +1,15 @@
 # TorchIK
 
-A PyTorch-based Inverse Kinematics (IK) solver that offers:
-- **Fast performance** using Gauss-Newton optimization
-- **Parallel computation** for batch IK solving
-- **Visualization capabilities** for solutions
+A lightweight, PyTorch-based Inverse Kinematics solver designed for robotics research and applications.
+
+## Key Features
+
+- **Fast performance** with Gauss-Newton optimization
+- **Parallel computation** for solving multiple IK problems simultaneously
+- **Visualization capabilities** for debugging and demonstration
+- **Simple structure** with minimal dependencies
+- **Flexible architecture** adaptable to various robot configurations
+- **End-to-end differentiability** supporting gradient-based learning
 
 ## Installation
 
@@ -13,25 +19,42 @@ pip install -r requirements.txt
 
 ## Quick Start
 
-Run the example script to see TorchIK in action with a Franka robot:
-
 ```bash
 python ik_example.py
 ```
 
-## Using with Your Robot
+This runs a demonstration using the Franka robot model included in the repository. The result is like that:
+<img src='result.png'/>
 
-To use TorchIK with your own robot:
+## Using Your Own Robot
 
-1. Specify the path to your URDF file when creating the `RobotModel`
-2. For visualization:
-   - Ensure mesh and link names are correctly aligned
-   - If needed, check/modify the `load_meshes()` and `theta2mesh()` functions
+1. Create a `RobotModel` instance with your URDF file:
 
-## Features
+```python
+robot = RobotModel(
+    urdf_path='path/to/your/robot.urdf',
+    last_link_name='end_effector',
+    load_mesh=True,
+    device='cpu'
+)
+```
 
-- PyTorch-based implementation for GPU acceleration
-- Batch processing for parallel IK solutions
-- Built-in visualization with trimesh
-- End-to-end differentiable forward and inverse kinematics
+2. Define target poses and run inverse kinematics:
+
+```python
+# Position and orientation (as quaternion) targets
+targets = torch.tensor([[x, y, z, qw, qx, qy, qz]])
+
+# Solve with multiple initial configurations for robustness
+solutions = run_ik(robot, targets, n_samples=1000)
+```
+
+3. For visualization support, ensure your mesh files and link names align properly in the URDF.
+
+## Implementation Notes
+
+- Leverages PyTorch for GPU acceleration and automatic differentiation
+- Quaternion-based orientation representation
+- Supports batch processing for parallel computation
+- Simple customization through the `RobotModel` class
 
